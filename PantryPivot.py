@@ -1,4 +1,15 @@
 import streamlit as st
+import google.genai as genai
+import os
+
+# Get Gemini API key from secrets, environment, or fallback
+api_key = st.secrets.get("GEMINI_API_KEY") or os.getenv("GEMINI_API_KEY")
+
+if not api_key:
+    st.sidebar.error("Gemini API key not found. Please set it in secrets.toml or environment variable.")
+    st.stop()
+
+client = genai.Client(api_key=api_key)
 
 st.set_page_config(
     page_title="PantryPivot",
@@ -40,6 +51,36 @@ ingredients = st.sidebar.multiselect(
 
 st.sidebar.markdown("---")
 
+# -----------------------------
+# RECIPE PIVOT ENGINE CONTROLS
+# -----------------------------
+
+st.sidebar.header("🔄 Recipe Pivot Engine")
+
+mode = st.sidebar.radio(
+    "Mode:",
+    ["Strict Mode", "Flexible Mode"],
+    help="Strict: Use ONLY available ingredients. Flexible: Up to 2 additional staples."
+)
+
+cuisine_pivot = st.sidebar.text_input(
+    "Cuisine Pivot (optional):",
+    placeholder="e.g., Make this Mexican"
+)
+
+meal_type_pivot = st.sidebar.selectbox(
+    "Meal Type Pivot:",
+    ["None", "Breakfast", "Lunch", "Dinner", "Snack"],
+    help="Transform into this meal type"
+)
+
+difficulty = st.sidebar.selectbox(
+    "Difficulty Scaling:",
+    ["Quick (15 min)", "Balanced (30-45 min)", "Weekend Project (1+ hr)"]
+)
+
+st.sidebar.markdown("---")
+
 st.sidebar.header("📊 Impact Stats")
 
 st.sidebar.metric("Money Saved", "$24")
@@ -64,7 +105,6 @@ for msg in st.session_state.messages:
 prompt = st.chat_input("Ask PantryPivot for a recipe...")
 
 if prompt:
-
     st.session_state.messages.append(
         {"role": "user", "content": prompt}
     )
@@ -73,82 +113,46 @@ if prompt:
         st.write(prompt)
 
     # -----------------------------
-    # SIMPLE RECIPE LOGIC
+    # AI RECIPE GENERATION
     # -----------------------------
 
-    recipe = ""
+    # Build the AI prompt
+        available_ingredients = ", ".join(ingredients) if ingredients else "none specified"
 
-    if "chicken" in prompt.lower():
+        system_prompt = f"""
+You are PantryPivot, a helpful AI that creates recipes from available ingredients.
 
-        recipe = """
-🍗 **Yogurt Chicken Skillet**
+Available ingredients: {available_ingredients}
 
-**FAST (20 min)**  
-Pan-seared chicken with creamy yogurt sauce and sautéed spinach.
+Mode: {mode}
+- Strict Mode: Use ONLY the available ingredients listed above. No additional ingredients.
+- Flexible Mode: Can suggest up to 2 additional basic staples (salt, pepper, oil, etc.).
 
-**BALANCED (40 min)**  
-Creamy spinach chicken served over rice.
+Cuisine Pivot: {cuisine_pivot if cuisine_pivot else "None"}
 
-**PROJECT (1 hr)**  
-Baked yogurt chicken casserole.
+Meal Type Pivot: {meal_type_pivot if meal_type_pivot != "None" else "None"}
 
-💡 **Waste Prevention Tip**  
-Spinach wilting soon? Freeze it for smoothies or soups.
+Difficulty: {difficulty}
 
-💰 Estimated Savings: **$8**  
-🌍 Impact: **1.2kg CO₂ prevented**
+User request: {prompt}
+
+Generate a recipe that fits the criteria. Include:
+- Recipe name
+- Prep/cook time
+- Ingredients list (marking any additional staples)
+- Step-by-step instructions
+- Waste prevention tip
+- Estimated savings and environmental impact
 """
 
-    elif "egg" in prompt.lower():
-
-        recipe = """
-🍳 **Cheesy Breakfast Toast**
-
-**FAST**  
-Toast bread, fry eggs, melt cheese on top.
-
-**BALANCED**  
-Omelette sandwich with toasted bread.
-
-**PROJECT**  
-Savory breakfast casserole.
-
-💡 **Waste Prevention Tip**  
-Bread getting stale? Turn it into breadcrumbs.
-"""
-
-    elif "rice" in prompt.lower():
-
-        recipe = """
-🍚 **Vegetable Fried Rice**
-
-1. Heat oil in a pan  
-2. Add carrots and garlic  
-3. Stir in rice and soy sauce  
-4. Cook until golden
-
-Optional Add-ins:
-• Egg
-• Chicken
-• Tofu
-
-💡 **Waste Prevention Tip**
-Cooked rice lasts 3–4 days in the fridge.
-"""
-
-    else:
-
-        recipe = """
-🥗 **Pantry Idea**
-
-Try mixing your ingredients into:
-
-**FAST:** Simple stir fry  
-**BALANCED:** Pasta or rice bowl  
-**PROJECT:** Baked casserole
-
-💡 Tip: Use expiring ingredients first!
-"""
+        try:
+            response = client.models.generate_content(
+                model='gemini-2.0-flash',
+                contents=system_prompt + "\n\n" + prompt
+            )
+            recipe = response.text
+        except Exception as e:
+            recipe = f"Error generating recipe: {str(e)}"
 
     with st.chat_message("assistant"):
         st.write(recipe)
