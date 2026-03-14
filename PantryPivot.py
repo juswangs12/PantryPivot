@@ -8,7 +8,7 @@ import time
 
 
 # Get Gemini API key from secrets, environment, or fallback
-api_key = st.secrets.get("GEMINI_API_KEY") or os.getenv("GEMINI_API_KEY")
+api_key = st.secrets.get("GEMINI_API_KEY") 
 
 if not api_key:
     st.sidebar.error("Gemini API key not found. Please set it in secrets.toml or environment variable.")
@@ -143,7 +143,7 @@ Generate a recipe that fits the criteria following the output formatting guideli
 
     try:
         response = client.models.generate_content(
-            model="gemini-1.5-flash",
+            model="gemini-2.5-flash",
             contents=[SYSTEM_PROMPT, prompt]
         )
 
@@ -414,7 +414,7 @@ Include shopping suggestions for any missing staples.
 
         try:
             response = client.models.generate_content(
-            model="gemini-1.5-flash",
+            model="gemini-2.5-flash",
             contents=[SYSTEM_PROMPT, prompt]
         )
             st.session_state.meal_plan = {"plan": response.text, "generated": datetime.datetime.now().isoformat()}
@@ -438,7 +438,7 @@ Focus on staples and fresh produce. Keep it minimal and organized by category.
 
             try:
                 response = client.models.generate_content(
-                model="gemini-1.5-flash",
+                model="gemini-2.5-flash",
                 contents=[prompt]
             )
                 st.subheader("🛒 Shopping List")
