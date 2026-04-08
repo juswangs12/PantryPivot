@@ -1,0 +1,261 @@
+/* ── Exactly matching Figma screenshot ── */
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+
+:root {
+  --bg-dark: #0f1322;
+  --bg-sidebar: #13182b;
+  --bg-card: #181d31;
+  --text-main: #f8fafc;
+  --text-muted: #94a3b8;
+  --accent-blue: #3b82f6;
+  --accent-indigo: #4f46e5;
+  --accent-red: #ef4444;
+  --accent-green: #22c55e;
+}
+
+html, body, [data-testid="stAppViewContainer"], [data-testid="stApp"] {
+  background-color: var(--bg-dark) !important;
+  color: var(--text-main) !important;
+  font-family: 'Plus Jakarta Sans', sans-serif !important;
+}
+
+[data-testid="stHeader"] {
+  background: transparent !important;
+}
+[data-testid="stDecoration"] {
+  display: none !important;
+}
+/* Ensure the sidebar collapsed control is EXTREMELY visible */
+[data-testid="collapsedControl"], [data-testid="stSidebarCollapsedControl"], .stSidebarCollapsedControl {
+  display: flex !important;
+  visibility: visible !important;
+  background: rgba(59, 130, 246, 0.2) !important; /* Slight blue background */
+  border-radius: 8px !important;
+  padding: 8px !important;
+  width: 44px !important;
+  height: 44px !important;
+  z-index: 1000000 !important;
+  top: 10px !important;
+  left: 10px !important;
+}
+[data-testid="collapsedControl"] svg, [data-testid="stSidebarCollapsedControl"] svg {
+  fill: white !important;
+  color: white !important;
+  width: 28px !important;
+  height: 28px !important;
+}
+
+.block-container {
+  padding: 40px 60px !important;
+  max-width: 1400px !important;
+}
+
+/* ── Sidebar ── */
+[data-testid="stSidebar"] {
+  background-color: var(--bg-sidebar) !important;
+  border-right: 1px solid rgba(255,255,255,0.05) !important;
+}
+[data-testid="stSidebar"] > div:first-child { background: transparent !important; }
+
+.sidebar-logo {
+  font-size: 1.6rem; font-weight: 900; color: white;
+  padding: 20px 16px; margin-bottom: 24px; display: flex; align-items: center; gap: 12px;
+  letter-spacing: -0.04em;
+}
+.sidebar-logo .icon-box {
+  background: var(--accent-blue); width: 32px; height: 32px; border-radius: 8px;
+  display: flex; align-items: center; justify-content: center; font-size: 1.2rem;
+}
+
+.sidebar-subtitle {
+  padding: 0 16px; margin-bottom: 40px;
+}
+.sidebar-subtitle .title { font-weight: 700; font-size: 0.85rem; color: #94a3b8; text-transform: uppercase; letter-spacing: 0.05em; }
+.sidebar-subtitle .status-pill { 
+  display: inline-flex; align-items: center; gap: 6px;
+  background: rgba(34, 197, 94, 0.1); color: #4ade80;
+  padding: 4px 10px; border-radius: 99px; font-size: 0.65rem; font-weight: 700;
+  margin-top: 8px; border: 1px solid rgba(34, 197, 94, 0.2);
+}
+.sidebar-subtitle .status-pill .pulse {
+  width: 6px; height: 6px; background: #4ade80; border-radius: 50%;
+  animation: pulse-green 2s infinite;
+}
+@keyframes pulse-green {
+  0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(74, 222, 128, 0.7); }
+  70% { transform: scale(1); box-shadow: 0 0 0 6px rgba(74, 222, 128, 0); }
+  100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(74, 222, 128, 0); }
+}
+
+/* ── Top Nav / Header ── */
+.top-nav {
+  display: flex; gap: 32px; color: var(--text-muted); font-size: 0.8rem;
+  font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em;
+  margin-bottom: 40px; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 16px;
+}
+.top-nav span.active { color: var(--accent-blue); border-bottom: 2px solid var(--accent-blue); padding-bottom: 16px; margin-bottom: -17px; }
+
+.hero-header { margin-bottom: 40px; }
+.hero-header h1 { font-size: 3.5rem; font-weight: 800; line-height: 1.1; margin-bottom: 16px; letter-spacing: -0.02em; }
+.hero-header p { font-size: 1.1rem; color: #cbd5e1; max-width: 600px; line-height: 1.5; }
+.hero-header p span { color: var(--accent-blue); font-weight: 600; }
+
+/* ── Scorecards ── */
+.scorecard-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 48px; }
+.score-card {
+  background-color: var(--bg-card); border-radius: 12px; padding: 20px;
+  position: relative;
+}
+.score-card.alert { border-left: 4px solid var(--accent-red); }
+.score-card .title { font-size: 0.7rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 12px; }
+.score-card .value { font-size: 2.5rem; font-weight: 800; margin-bottom: 8px; line-height: 1; }
+.score-card .value.red { color: var(--accent-red); }
+.score-card .sub { font-size: 0.75rem; color: var(--text-muted); display: flex; align-items: center; gap: 4px; }
+.score-card .sub.red { color: var(--accent-red); }
+.score-card .icon { position: absolute; right: 20px; top: 20px; font-size: 32px; opacity: 0.2; color: white; }
+
+/* ── Two Column Layout ── */
+.section-title { font-size: 1.4rem; font-weight: 700; margin-bottom: 20px; }
+
+.nav-hub-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.hub-card-large {
+  background: linear-gradient(to bottom right, rgba(255,255,255,0.1), rgba(0,0,0,0.5)), url('https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&q=80&w=500');
+  background-size: cover; background-position: center;
+  border-radius: 16px; padding: 24px; min-height: 250px;
+  display: flex; flex-direction: column; justify-content: flex-end;
+}
+.hub-card-large h3 { font-size: 1.8rem; font-weight: 800; margin: 0 0 8px 0; line-height: 1.1; }
+.hub-card-large p { font-size: 0.9rem; color: #e2e8f0; margin: 0; }
+
+.hub-card-small {
+  background-color: var(--bg-card); border-radius: 16px; padding: 24px;
+  display: flex; flex-direction: column; justify-content: center; gap: 8px;
+  position: relative; cursor: pointer; border: 1px solid transparent; transition: 0.2s;
+}
+.hub-card-small:hover { border-color: rgba(255,255,255,0.1); background-color: #1e243b; }
+.hub-card-small .icon { color: var(--text-muted); margin-bottom: 4px; }
+.hub-card-small h4 { font-size: 1.1rem; font-weight: 700; margin: 0; }
+.hub-card-small p { font-size: 0.75rem; color: var(--text-muted); margin: 0; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; }
+.hub-card-small .arrow { position: absolute; right: 24px; top: 50%; transform: translateY(-50%); color: var(--text-muted); }
+
+/* ── Use These First List ── */
+.utf-list { display: flex; flex-direction: column; gap: 12px; }
+.utf-item {
+  background-color: var(--bg-card); border-radius: 12px; padding: 16px;
+  display: flex; align-items: center; justify-content: space-between;
+}
+.utf-left { display: flex; align-items: center; gap: 16px; }
+.utf-icon { width: 48px; height: 48px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 24px; background: rgba(255,255,255,0.05); }
+.utf-info h4 { margin: 0 0 4px 0; font-size: 1rem; font-weight: 600; }
+.utf-info p { margin: 0; font-size: 0.75rem; color: var(--text-muted); display: flex; align-items: center; gap: 8px; }
+.utf-info p span.red { color: var(--accent-red); font-weight: 700; text-transform: uppercase; }
+
+.badge { padding: 4px 12px; border-radius: 99px; font-size: 0.65rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em; }
+.badge.critical { background: rgba(239,68,68,0.15); color: #ef4444; border: 1px solid rgba(239,68,68,0.3); }
+.badge.warning { background: rgba(59,130,246,0.15); color: #3b82f6; border: 1px solid rgba(59,130,246,0.3); }
+.badge.stable { background: rgba(255,255,255,0.05); color: var(--text-muted); border: 1px solid rgba(255,255,255,0.1); }
+
+/* ── Streamlit Buttons ── */
+/* Primary global button override */
+.stButton > button {
+  background-color: rgba(255,255,255,0.05) !important; color: white !important;
+  border: none !important; border-radius: 8px !important; font-weight: 600 !important;
+  padding: 12px !important; transition: 0.2s !important;
+}
+.stButton > button:hover { background-color: rgba(255,255,255,0.1) !important; color: white !important; }
+
+/* Sidebar Nav Buttons */
+[data-testid="stSidebar"] .stButton > button {
+  background: transparent !important; color: #94a3b8 !important;
+  justify-content: flex-start !important; padding: 12px 16px !important;
+  border-radius: 12px !important; font-weight: 600 !important; font-size: 0.9rem !important;
+  margin-bottom: 8px !important; display: flex !important; gap: 12px !important;
+  border: 1px solid transparent !important; transition: 0.3s !important;
+}
+[data-testid="stSidebar"] .stButton > button:hover { 
+  background: rgba(255,255,255,0.03) !important; color: white !important; 
+  transform: translateX(4px);
+}
+
+/* Active Nav State */
+.active-nav .stButton > button {
+  background: rgba(59, 130, 246, 0.1) !important;
+  color: var(--accent-blue) !important;
+  border-left: 3px solid var(--accent-blue) !important;
+  border-radius: 4px 12px 12px 4px !important;
+}
+
+/* Sidebar Pro Badge at bottom */
+.sidebar-footer {
+  position: absolute; bottom: 40px; left: 16px; right: 16px;
+  background: linear-gradient(135deg, #1e293b, #0f172a);
+  padding: 16px; border-radius: 16px; border: 1px solid rgba(255,255,255,0.05);
+}
+.sidebar-footer h5 { font-size: 0.85rem; font-weight: 700; margin: 0 0 4px 0; color: white; }
+.sidebar-footer p { font-size: 0.65rem; color: var(--text-muted); margin: 0; line-height: 1.4; }
+.sidebar-footer .badge { background: var(--accent-blue); padding: 2px 6px; border-radius: 4px; font-size: 0.55rem; float: right; }
+
+/* The 'Log Waste' Button */
+.btn-log-waste button {
+  background-color: #bfdbfe !important; color: #1e3a8a !important;
+  font-weight: 700 !important; border-radius: 99px !important;
+  margin-top: 24px !important;
+}
+.btn-log-waste button:hover { background-color: #93c5fd !important; }
+
+/* Rescue Recipe Button */
+.btn-rescue button {
+  background-color: var(--bg-card) !important; color: white !important;
+  border: 1px solid rgba(255,255,255,0.1) !important; font-size: 0.8rem !important;
+  letter-spacing: 0.05em !important; text-transform: uppercase !important;
+  margin-top: 16px !important; font-weight: 700 !important;
+}
+.btn-rescue button:hover { background-color: rgba(255,255,255,0.1) !important; }
+
+/* Recipe Assistant Enhancements */
+.pp-recipe-chat {
+  background: rgba(255,255,255,0.02);
+  border-radius: 12px;
+  padding: 16px;
+  min-height: 200px;
+  margin-bottom: 20px;
+}
+
+/* Quick Actions Styling */
+.stButton > button[key^="qa_"] {
+  background: rgba(255,255,255,0.05) !important;
+  border: 1px solid rgba(255,255,255,0.1) !important;
+  border-radius: 8px !important;
+  padding: 12px 8px !important;
+  font-size: 0.85rem !important;
+  height: auto !important;
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 4px !important;
+  align-items: center !important;
+}
+
+.stButton > button[key^="qa_"]:hover {
+  background: rgba(59, 130, 246, 0.1) !important;
+  border-color: var(--accent-blue) !important;
+}
+
+/* Expander/Glass card overrides for settings */
+div[data-testid="stExpander"] {
+  background: var(--bg-card) !important;
+  border: 1px solid rgba(255,255,255,0.05) !important;
+  border-radius: 12px !important;
+  overflow: hidden !important;
+  margin-bottom: 24px !important;
+}
+
+div[data-testid="stExpander"] > details {
+  border: none !important;
+}
+
+div[data-testid="stExpander"] [data-testid="stExpanderHeader"] {
+  font-weight: 700 !important;
+  color: white !important;
+}
+
+footer { display: none !important; }
